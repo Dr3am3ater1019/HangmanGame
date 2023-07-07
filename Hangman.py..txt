@@ -1,0 +1,170 @@
+import random
+
+def select_word():
+    words = [
+        ("cat", "A small animal that sometimes runs away from home and hangs around the neighborhood."),
+        ("dog", "Sometimes annoying like Rigby."),
+        ("tree", "Gives you a nice cooling shade."),
+        ("book", "Tony and Lexie never use these even though they would help them get smart."),
+        ("cake", "Lexie is a sassy girl that loves to eat them."),
+        ("sun", "Can give you painful sunburns. Wahh wahh."),
+        ("flower", "A colorful plant that blooms with petals and smells good. Some of them keep bugs away."),
+        ("car", "Sebas has lots of them."),
+        ("rainbow", "Can be found in boxes of Lucky Charms."),
+        ("beach", "Sandy and full of people getting sunburns."),
+        ("banana", "A yellow fruit that monkeys love."),
+        ("laughter", "The sound of joy and amusement."),
+        ("pizza", "A delicious food topped with cheese and various toppings."),
+        ("giraffe", "A tall animal with a long neck and spots."),
+        ("joke", "Something that makes people laugh."),
+        ("moon", "Glowing in the night sky."),
+        ("unicorn", "A mythical creature with a horn on its forehead."),
+        ("chocolate", "A sweet treat made from cocoa beans."),
+        ("penguin", "A flightless bird that waddles on ice."),
+        ("watermelon", "A juicy fruit that is perfect for summer."),
+        ("socks", "Footwear used to keep your feet warm and cozy."),
+        ("bubble", "A sphere of soap and water that floats in the air."),
+        ("donut", "A round pastry with a hole in the middle."),
+        ("pajamas", "Comfortable clothing worn for sleeping."),
+        ("rain", "Water falling from the sky."),
+        ("cactus", "A desert plant with spiky thorns."),
+        ("pillow", "Soft cushion for resting your head."),
+        ("crayon", "A coloring tool used by children."),
+        ("music", "Melodies and rhythms that bring joy."),
+        ("elephant", "A large animal with a long trunk and tusks."),
+        ("butterfly", "A beautiful insect that goes through metamorphosis."),
+        ("cookie", "A sweet baked treat often filled with chocolate chips."),
+        ("robot", "A machine designed to perform tasks automatically."),
+        ("balloon", "Inflatable object often used for decoration or play."),
+        ("dinosaur", "An extinct reptile that roamed the Earth millions of years ago."),
+        ("teddy bear", "A stuffed toy for cuddling and comfort."),
+        ("fireworks", "Explosive displays of light and color during celebrations."),
+        ("milkshake", "A blended beverage made with milk and flavorings."),
+        ("bicycle", "A two-wheeled vehicle propelled by pedals."),
+        ("helicopter", "An aircraft with rotating blades that allow it to hover and fly."),
+        ("snowman", "A figure made of snow, often adorned with a hat and scarf."),
+        ("superhero", "A fictional character with extraordinary powers and abilities."),
+        ("birthday", "A special day commemorating the anniversary of one's birth.")
+    ]
+    return random.choice(words)
+
+def generate_hint(word, guesses):
+    hint = ""
+    for letter in word:
+        if letter in guesses:
+            hint += letter + " "
+        else:
+            hint += "- "
+    return hint.strip()
+
+def draw_hangman(attempts):
+    stages = [
+        '''
+           --------
+           |      |
+           |      O
+           |     \\|/
+           |      |
+           |     / \\
+           -
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |     \\|/
+           |      |
+           |     / 
+           -
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |     \\|/
+           |      |
+           |      
+           -
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |     \\|
+           |      |
+           |     
+           -
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |      |
+           |      |
+           |     
+           -
+        ''',
+        '''
+           --------
+           |      |
+           |      O
+           |    
+           |      
+           |     
+           -
+        ''',
+        '''
+           --------
+           |      |
+           |      
+           |    
+           |      
+           |     
+           -
+        '''
+    ]
+    return stages[6 - attempts]
+
+def play_game():
+    while True:
+        word, hint = select_word()
+        guesses = []
+        num_attempts = 0
+        max_attempts = 6
+
+        print("Welcome to Hangman!")
+        print("I'm thinking of a word. Let's start guessing!")
+
+        while True:
+            print("\nHint:", hint)
+            print("Previous guesses:", guesses)
+            print(draw_hangman(num_attempts))
+
+            guess = input("Guess a letter or the whole word: ").lower()
+            num_attempts += 1
+
+            if guess == word:
+                print(f"Congratulations! You guessed the word '{word}' correctly!")
+                break
+
+            if guess in guesses:
+                print("You already guessed that letter. Try again!")
+                continue
+
+            guesses.append(guess)
+
+            if guess in word:
+                print("Correct guess!")
+                hint = generate_hint(word, guesses)
+            else:
+                print("Incorrect guess!")
+
+            if num_attempts >= max_attempts:
+                print(f"Sorry, you've reached the maximum number of attempts. The word was '{word}'.")
+                break
+
+        play_again = input("Do you want to play again? (yes/no): ").lower()
+        if play_again != "yes":
+            break
+
+play_game()
